@@ -15,7 +15,6 @@ SELECT
 				coalesce( canceled_date, expired_date )
 		END
 	) AS end_date
-	,date(end_date,'+2 years','+1 day') AS avail_date
 	,last_action_date
 	,am.district
 FROM
@@ -33,4 +32,11 @@ GROUP BY
 	hd.callsign
 ;
 
-SELECT * from tmp_ivc WHERE avail_date < date('now');
+
+WITH cte_ivc AS (SELECT * from tmp_ivc)
+	SELECT *,
+		date(end_date,'+2 years','+1 day') AS avail_date
+	FROM cte_ivc
+	WHERE avail_date < date('now')
+	ORDER BY district, avail_date, callsign
+	;
