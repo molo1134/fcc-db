@@ -161,11 +161,14 @@ main() {
 
 	uls_fetch $args || die "fetch failed for ULS zips"
 
-	# Iterate new zips, moving each zip/info pair to final dirs.
+	# Iterate new zips, setting timestamp and moving each zip/info pair to final dirs.
 
 	local err=0 cnt=0
 	for fn in *.zip; do
 		cnt=$((cnt+1))
+
+		update_timestamp "$fn"
+
 		mv "$fn" "$ZIPDIR/" || err=1
 		mv "${fn%.*}.info" "$INFODIR/" || err=1
 	done
@@ -182,6 +185,16 @@ main() {
 # last_mod() - extract Last-Modified transfer-header from file
 
 last_mod() { grep -i -E '^Last-Modified: ' "$1"; }
+
+# update_timestamp() - get the file creation timestamp out of the "counts" file
+# in zip, then apply that timestamp to the zip file itself.  FTP/HTTP
+# last modification timestamps are unreliable.
+update_timestamp() {
+  zip=$1
+  zipts=$(7z x -so "$zip" counts | head -1 | sed -e 's/^File Creation Date: //')
+  # touch date format assumes GNU userland
+  touch "--date=$zipts" "$zip"
+}
 
 uls_fetch() {
 	local info="" outs="" urls=""
