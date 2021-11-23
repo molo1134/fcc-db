@@ -1,5 +1,6 @@
 --- FCC DB schema
 
+-- Main Form 605 data that carries over to the license
 CREATE TABLE t_hd (
 	sys_id INTEGER PRIMARY KEY,
 	uls_fileno TEXT,
@@ -15,11 +16,12 @@ CREATE TABLE t_hd (
 	name_change TEXT
 );
 
+-- amateur data
 CREATE TABLE t_am (
 	sys_id INTEGER PRIMARY KEY,
 	uls_fileno TEXT,
 	callsign TEXT,
-	op_class TEXT,
+	op_class TEXT,		-- T/G/E [blank for clubs]
 	group_code TEXT,
 	region_code INT,
 	trustee_callsign TEXT,
@@ -32,6 +34,7 @@ CREATE TABLE t_am (
 	district INT
 );
 
+-- names and addresses
 CREATE TABLE t_en (
 	sys_id INTEGER PRIMARY KEY,
 	uls_fileno TEXT,
@@ -50,10 +53,11 @@ CREATE TABLE t_en (
 	po_box TEXT,
 	attn TEXT,
 	frn TEXT,
-	type_code TEXT,
+	type_code TEXT,		-- I=indiv, B=club
 	district INT
 );
 
+-- application/license history
 CREATE TABLE t_hs (
 	id INTEGER PRIMARY KEY,
 	sys_id INT NOT NULL,
