@@ -3,6 +3,13 @@
 
 BASEDIR="basedir"
 
+if [ -e $BASEDIR/db.lock ]; then
+	echo "db locked"
+	exit 0
+fi
+
+touch $BASEDIR/db.lock
+
 ./uls-fetch.sh -b `realpath $BASEDIR` -m
 
 LASTWL=$(cat $BASEDIR/last_weekly_l)
@@ -36,3 +43,4 @@ for d in sat sun mon tue wed thu fri ; do
 	fi
 done
 
+rm -f $BASEDIR/db.lock

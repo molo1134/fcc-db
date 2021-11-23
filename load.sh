@@ -8,6 +8,7 @@ rm -f uls-app.sqlite
 rm -f uls-lic.sqlite
 
 mkdir -p $BASEDIR
+touch $BASEDIR/db.lock
 
 ./uls-fetch.sh -b `realpath $BASEDIR` -m
 
@@ -39,3 +40,4 @@ for d in sat sun mon tue wed thu fri ; do
 	fi
 done
 
+rm $BASEDIR/db.lock
