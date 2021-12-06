@@ -20,13 +20,15 @@ touch $BASEDIR/db.lock
 echo "running uls-fetch..." >> "$LOGFILE"
 ./uls-fetch.sh -b $(realpath "$BASEDIR") -m >> "$LOGFILE"
 
-LASTWL=$(cat $BASEDIR/last_weekly_l)
-LASTWA=$(cat $BASEDIR/last_weekly_a)
+LASTWL=$BASEDIR/last_weekly_l
+LASTWA=$BASEDIR/last_weekly_a
 
 if [ "$BASEDIR/weekly_l.zip" -nt "$LASTWL" -o \
 		$BASEDIR/weekly_a.zip -nt "$LASTWA" ]; then
+	echo "unlocking DB..."
+	rm -f $BASEDIR/db.lock
 	echo "execing load.sh..." >> "$LOGFILE"
-	exec load.sh
+	exec ./load.sh
 fi
 
 LASTL=$(cat $BASEDIR/last_import_l)
@@ -37,7 +39,7 @@ for d in sun mon tue wed thu fri sat ; do
 	DAILYL="$BASEDIR/daily_l_$d.zip"
 	if [ "$DAILYL" -nt "$LASTL" ]; then
 		echo ./import.pl -c conf-lic.ini "$DAILYL" >> "$LOGFILE"
-		./import.pl -c conf-lic.ini "$DAILYL"
+		./import.pl -c conf-lic.ini "$DAILYL" >> "$LOGFILE"
 		echo "$DAILYL" > $BASEDIR/last_import_l
 	fi
 done
@@ -47,7 +49,7 @@ for d in sat sun mon tue wed thu fri ; do
 	DAILYA="$BASEDIR/daily_a_$d.zip"
 	if [ "$DAILYA" -nt "$LASTA" ]; then
 		echo ./import.pl -c conf-app.ini "$DAILYA" >> "$LOGFILE"
-		./import.pl -c conf-app.ini "$DAILYA"
+		./import.pl -c conf-app.ini "$DAILYA" >> "$LOGFILE"
 		echo "$DAILYA" > $BASEDIR/last_import_a
 	fi
 done
