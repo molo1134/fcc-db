@@ -25,7 +25,7 @@ LASTWA=$BASEDIR/last_weekly_a
 
 if [ "$BASEDIR/weekly_l.zip" -nt "$LASTWL" -o \
 		$BASEDIR/weekly_a.zip -nt "$LASTWA" ]; then
-	echo "unlocking DB..."
+	echo "unlocking DB..." >> "$LOGFILE"
 	rm -f $BASEDIR/db.lock
 	echo "execing load.sh..." >> "$LOGFILE"
 	exec ./load.sh
