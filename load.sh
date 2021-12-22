@@ -26,11 +26,13 @@ echo ./import.pl -n -c conf-lic.ini $BASEDIR/weekly_l.zip >> "$LOGFILE"
 ./import.pl -n -c conf-lic.ini $BASEDIR/weekly_l.zip >> "$LOGFILE" 2>&1
 echo $BASEDIR/weekly_l.zip > $BASEDIR/last_import_l
 echo $BASEDIR/weekly_l.zip > $BASEDIR/last_weekly_l
+touch -r $BASEDIR/weekly_l.zip $BASEDIR/last_weekly_l
 
 echo ./import.pl -n -c conf-app.ini $BASEDIR/weekly_a.zip >> "$LOGFILE"
 ./import.pl -n -c conf-app.ini $BASEDIR/weekly_a.zip >> "$LOGFILE" 2>&1
 echo $BASEDIR/weekly_a.zip > $BASEDIR/last_import_a
 echo $BASEDIR/weekly_a.zip > $BASEDIR/last_weekly_a
+touch -r $BASEDIR/weekly_a.zip $BASEDIR/last_weekly_a
 
 # licenses start from sunday
 for d in sun mon tue wed thu fri sat ; do 
