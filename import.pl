@@ -21,6 +21,9 @@ use QKTech::ULS::IO7z ();
 use QKTech::ULS::Data ();
 use QKTech::ULS::Table ();
 
+STDOUT->autoflush();
+STDERR->autoflush();
+
 use constant {
 	MONTH_TO_DEC => {
 		JAN => '01',	FEB => '02',	MAR => '03',
@@ -101,7 +104,7 @@ sub parse_options {
 }
 
 sub fatal {
-	printf(STDERR "%s\n", $_) for (@_);
+	printf(STDERR "fatal: %s\n", $_) for (@_);
 	exit 1;
 }
 
@@ -155,13 +158,13 @@ sub main {
 		$io7z->close();
 
 		if ($Opts->{new}) { # new weekly post-import needs
-			print( STDERR "Building indexes.." );
+			print( STDERR "Building indexes..\n" );
 			index_db( $dbh, $index_sql );
-			print( STDERR " Analyze DB.." );
+			print( STDERR "Analyze DB..\n" );
 			$dbh->do('ANALYZE');
 			$dbh->commit();
 			$dbh->do('PRAGMA journal_mode = DELETE');
-			print( STDERR " Done.\n" );
+			print( STDERR "Done.\n" );
 			$Opts->{new} = 0;
 		}
 	}

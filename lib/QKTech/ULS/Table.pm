@@ -159,7 +159,7 @@ sub import {
 	my $date_conv = $self->get('date_fields'); # array-ref of US date indexes
 	my $name = $self->get('name');		# short name of table (for display)
 
-	print(STDERR "Importing table $name: " );
+	print(STDERR "Importing table $name...\n" );
 
 	eval {
 		$io7z->extract( $src_file )
@@ -197,7 +197,7 @@ sub import {
 			}
 			# Display progress every 250k:
 			if ($nr % 250000 == 0) {
-				printf(STDERR "%dk.. ", $nr / 1000);
+				printf(STDERR " %dk..\n", $nr / 1000);
 			}
 		}
 
