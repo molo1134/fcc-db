@@ -23,8 +23,10 @@ echo "running uls-fetch..." >> "$LOGFILE"
 LASTWL=$BASEDIR/last_weekly_l
 LASTWA=$BASEDIR/last_weekly_a
 
-if [ "$BASEDIR/weekly_l.zip" -nt "$LASTWL" -o \
-		$BASEDIR/weekly_a.zip -nt "$LASTWA" ]; then
+if [ ! -e $LASTWL -o \
+	! -e $LASTWA -o \
+		"$BASEDIR/weekly_l.zip" -nt "$LASTWL" -o \
+		"$BASEDIR/weekly_a.zip" -nt "$LASTWA" ]; then
 	echo "unlocking DB..." >> "$LOGFILE"
 	rm -f $BASEDIR/db.lock
 	echo "execing load.sh..." >> "$LOGFILE"
