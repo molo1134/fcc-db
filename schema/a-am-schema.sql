@@ -22,7 +22,7 @@ CREATE TABLE t_ad (
 	uls_fileno TEXT,
 	purpose TEXT,
 	status TEXT, 		-- application status: 2=Pending; G=granted; D=dismissed; R=returned; W=withdrawn
-	source TEXT,
+	source TEXT,		-- B = batch, I = interactive, M = manual
 	receipt_date TEXT,
 	orig_purpose TEXT,
 	waver_req TEXT,
@@ -62,7 +62,7 @@ CREATE TABLE t_vc (
 CREATE TABLE t_en (
 	sys_id INTEGER PRIMARY KEY,
 	uls_fileno TEXT,
-	callsign TEXT,
+	callsign TEXT,		-- always null in applications
 	entity_type TEXT,	-- always L
 	license_id TEXT,
 	entity_name TEXT,
