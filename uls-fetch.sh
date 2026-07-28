@@ -198,8 +198,8 @@ update_timestamp() {
 
 uls_fetch() {
 	local info="" outs="" urls=""
-	local uri_base="ftp://wirelessftp.fcc.gov/pub/uls"
-	#local uri_base="https://data.fcc.gov/download/pub/uls/"
+	#local uri_base="ftp://wirelessftp.fcc.gov/pub/uls"
+	local uri_base="https://data.fcc.gov/download/pub/uls/"
 
 	local status="%{filename_effective} %{size_download} %{speed_download} %{url_effective}\n"
 	local ext=zip
