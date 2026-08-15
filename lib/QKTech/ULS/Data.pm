@@ -34,11 +34,11 @@ sub query_HD {
 	my ($self, $table) = (@_);
 
 	$table->dateFields(
-		dates => [ 8..10, -8, -7 ],
+		dates => [ 8..10, 43, 44 ],
 	) or die "HD dates failed: " . $table->error;
 
 	$table->addQuery(
-		fields => [ 2..3, 5..10, 19, -8, -7, -1 ],
+		fields => [ 2..3, 5..10, 19, 43, 44, 50 ],
 		sql => qq[
 			INSERT OR REPLACE INTO t_hd (
 				sys_id,
