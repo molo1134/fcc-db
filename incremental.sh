@@ -7,15 +7,23 @@ DATE=$(date "+%Y-%m-%d_%H:%M")
 LOGFILE=log/${DATE}.log
 mkdir -p log
 
+VANITYLOCK="/tmp/vanity-predict.lockfile"
+
 echo "incremental.sh start" >> "$LOGFILE"
 
-if [ -e $BASEDIR/db.lock ]; then
+if [ -e "$BASEDIR/db.lock" ]; then
 	echo "db locked, exiting" >> "$LOGFILE"
 	exit 1
 fi
 
+if [ -e "$VANITYLOCK" ]; then
+	echo "found vanity lock file with contents:" >> "$LOGFILE"
+	cat "$VANITYLOCK" >> "$LOGFILE"
+	exit 1
+fi
+
 echo "locking DB..." >> "$LOGFILE"
-touch $BASEDIR/db.lock
+touch "$BASEDIR/db.lock"
 
 echo "running uls-fetch..." >> "$LOGFILE"
 ./uls-fetch.sh -b $(realpath "$BASEDIR") -m >> "$LOGFILE" 2>&1

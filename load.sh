@@ -2,22 +2,35 @@
 # (c) 2021 Chris Ruvolo K2CR.  GPLv3
 
 BASEDIR="basedir"
-rm -rf $BASEDIR
 
 DATE=$(date "+%Y-%m-%d_%H:%M")
 LOGFILE=log/${DATE}.log
 mkdir -p log
 
+VANITYLOCK="/tmp/vanity-predict.lockfile"
+
 echo "load.sh start" >> "$LOGFILE"
+
+if [ -e "$BASEDIR/db.lock" ]; then
+	echo "db locked, exiting" >> "$LOGFILE"
+	exit 1
+fi
+
+if [ -e "$VANITYLOCK" ]; then
+	echo "found vanity lock file with contents:" >> "$LOGFILE"
+	cat "$VANITYLOCK" >> "$LOGFILE"
+	exit 1
+fi
+
+rm -rf $BASEDIR
+mkdir -p $BASEDIR
+echo "locking DB..." >> "$LOGFILE"
+touch $BASEDIR/db.lock
 
 echo "Removing old DB files.." >> "$LOGFILE"
 
 rm -f uls-app.sqlite
 rm -f uls-lic.sqlite
-
-mkdir -p $BASEDIR
-echo "locking DB..." >> "$LOGFILE"
-touch $BASEDIR/db.lock
 
 echo "running uls-fetch..." >> "$LOGFILE"
 ./uls-fetch.sh -b $(realpath $BASEDIR) -m >> "$LOGFILE" 2>&1
